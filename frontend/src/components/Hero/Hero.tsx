@@ -29,10 +29,10 @@ const Hero = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2">
                 {/* text cotent section */}
                 <div className="flex flex-col justify-center gap-4 pt-12 sm:pt-0 text-center sm:text-left order-2 sm:order-1 relative z-10">
-                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold">
+                  <h1 data-aos = "zoom-in" data-aos-duration = "500" data-aos-once = "true" className="text-5xl sm:text-6xl lg:text-7xl font-bold">
                     {item.title}
                   </h1>
-                  <p className="text-sm">{item.description}</p>
+                  <p data-aos = "zoom-in" data-aos-duration = "500" data-aos-delay = "100" className="text-sm">{item.description}</p>
                   <div>
                     <button className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white px-4 py-2 rounded-full">
                       Order Now
@@ -42,7 +42,7 @@ const Hero = () => {
                 {/* text cotent section */}
                 {/* image section */}
                 <div className="order-1 sm:order-2">
-                  <div className="relative z-10">
+                  <div data-aos = "zoom-in" data-aos-once= "true" className="relative z-10">
                     <img
                       src={item.img}
                       alt=""
