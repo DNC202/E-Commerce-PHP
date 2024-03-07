@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState , useEffect} from "react";
 
 import LightButton from "../../assets/lightmode.png";
 import DarkButton from "../../assets/darkmode.png";
@@ -6,11 +6,11 @@ import DarkButton from "../../assets/darkmode.png";
 const Darkmode = () => {
 
   // switch mode
-  const [theme, setTheme] = React.useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "light");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "light");
 
   const element = document.documentElement;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (theme === "dark") {
       element.classList.add("dark");
       localStorage.setItem("theme", "dark");
