@@ -6,6 +6,10 @@ import Product from './components/Product/Product'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import TopProduct from './components/TopProduct/TopProduct';
+import Banner from './components/Banner/Banner';
+import Subscribe from './components/Subscribe/Subscribe';
+import Testimonials from './components/Testimonials/Testimonials';
+import Footer from './components/Footer/Footer';
 
 
 const App = () => {
@@ -26,6 +30,10 @@ const App = () => {
       <Hero/>
       <Product/>
       <TopProduct/>
+      <Banner/>
+      <Subscribe/>
+      <Testimonials/>
+      <Footer/>
     </div>
   )
 }

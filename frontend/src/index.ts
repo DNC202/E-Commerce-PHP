@@ -26,6 +26,7 @@ const menuItems = [
   { id: 2, label: "Product", link: "/product" },
   { id: 3, label: "About", link: "/about" },
   { id: 4, label: "Contact", link: "/contact" },
+  { id: 5, label: "Blog", link: "/blog" },
 ];
 
 const Dropdown = [
@@ -134,7 +135,55 @@ const TopProductsData = [
 ];
 
 
+// Testimonial Data
+const TestimonialData = [
+  {
+    id: 1,
+    name: "Victor",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis inventore iste ratione ex alias quis magni at optio",
+    img: "https://picsum.photos/101/101",
+  },
+  {
+    id: 2,
+    name: "Satya Nadella",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis inventore iste ratione ex alias quis magni at optio",
+    img: "https://picsum.photos/102/102",
+  },
+  {
+    id: 3,
+    name: "Virat Kohli",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis inventore iste ratione ex alias quis magni at optio",
+    img: "https://picsum.photos/104/104",
+  },
+  {
+    id: 5,
+    name: "Sachin Tendulkar",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis inventore iste ratione ex alias quis magni at optio",
+    img: "https://picsum.photos/103/103",
+  },
+];
 
+
+
+// Footer link data
+const FooterLinks = [
+  {
+    title: "Home",
+    link: "/#",
+  },
+  {
+    title: "About",
+    link: "/#about",
+  },
+  {
+    title: "Contact",
+    link: "/#contact",
+  },
+  {
+    title: "Blog",
+    link: "/#blog",
+  },
+];
 
 // Export
 export const Menu = menuItems;
@@ -142,3 +191,5 @@ export const DropdownMenu = Dropdown;
 export const ImageListSection = ImageList;
 export const Products = ProductsData;
 export const TopProducts = TopProductsData;
+export const Testimonial = TestimonialData;
+export const FooterLink = FooterLinks;

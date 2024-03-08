@@ -1,6 +1,5 @@
 import React from "react";
 import { Products } from "../../index.ts";
-
 import { FaStar } from "react-icons/fa";
 
 const Product = () => {
