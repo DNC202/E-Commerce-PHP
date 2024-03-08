@@ -5,6 +5,7 @@ import Product from './components/Product/Product'
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import TopProduct from './components/TopProduct/TopProduct';
 
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
       <Navbar/>
       <Hero/>
       <Product/>
+      <TopProduct/>
     </div>
   )
 }

@@ -11,6 +11,14 @@ import Img3 from "../src/assets/women/women3.jpg";
 import Img4 from "../src/assets/women/women4.jpg";
 
 
+// import image top product
+import Shirt1 from "../src/assets/shirt/shirt.png";
+import Shirt2 from "../src/assets/shirt/shirt2.png";
+import Shirt3 from "../src/assets/shirt/shirt3.png";
+
+
+
+// Component Header (Navbar)
 
 // Define your menu items
 const menuItems = [
@@ -26,6 +34,9 @@ const Dropdown = [
   { id: 3, label: "Best Selling", link: "#" },
   { id: 4, label: "Best Rated", link: "#" },
 ];
+
+
+// Component Hero
 
 const ImageList = [
   {
@@ -51,6 +62,7 @@ const ImageList = [
   },
 ];
 
+// Component Products
 
 const ProductsData = [
   {
@@ -96,12 +108,37 @@ const ProductsData = [
 ];
 
 
+// Component Top Products
+const TopProductsData = [
+  {
+    id: 1,
+    img: Shirt1,
+    title: "Casual Wear",
+    description:
+      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    id: 2,
+    img: Shirt2,
+    title: "Printed shirt",
+    description:
+      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    id: 3,
+    img: Shirt3,
+    title: "Women shirt",
+    description:
+      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+];
 
 
 
 
-// Export the menu
+// Export
 export const Menu = menuItems;
 export const DropdownMenu = Dropdown;
 export const ImageListSection = ImageList;
 export const Products = ProductsData;
+export const TopProducts = TopProductsData;
