@@ -14,7 +14,7 @@ const Navbar = () => {
       <div className="bg-primary/40 py-2">
         <div className="container flex justify-between items-center ">
           <div>
-            <a href="#" className="front-bold text-2xl sm:text-3xl flex gap-2">
+            <a href="/" className="front-bold text-2xl sm:text-3xl flex gap-2">
               <img src={Logo} alt="" className="w-[50px]" />
               E-commerce
             </a>
@@ -42,6 +42,14 @@ const Navbar = () => {
             {/* Drakmode swich */}
             <div>
               <Darkmode />
+            </div>
+            <div className='flex gap-4'>
+              <div>
+                <a href="/login">Login</a>
+              </div>
+              <div>
+                <a href="/register">Register</a>
+              </div>
             </div>
           </div>
         </div>
