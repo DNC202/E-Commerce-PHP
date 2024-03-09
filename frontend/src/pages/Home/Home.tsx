@@ -1,14 +1,14 @@
 import React, {useEffect} from "react";
 
-import Hero from "../Hero/Hero";
-import Product from "../Product/Product";
+import Hero from "../../components/Hero/Hero";
+import Product from "../../components/Product/Product";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-import TopProduct from "../TopProduct/TopProduct";
-import Banner from "../Banner/Banner";
-import Subscribe from "../Subscribe/Subscribe";
-import Testimonials from "../Testimonials/Testimonials";
+import TopProduct from "../../components/TopProduct/TopProduct";
+import Banner from "../../components/Banner/Banner";
+import Subscribe from "../../components/Subscribe/Subscribe";
+import Testimonials from "../../components/Testimonials/Testimonials";
 
 const Home = () => {
   useEffect(() => {
