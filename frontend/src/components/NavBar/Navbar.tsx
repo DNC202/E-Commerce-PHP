@@ -2,7 +2,8 @@ import React from 'react'
 import { CiSearch } from "react-icons/ci";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
-import Logo from "../../assets/react.svg";
+// import Logo from "../../assets/Logo.png";
+import Logo from "../../assets/image.png";
 import Darkmode from "./Darkmode";
 
 import { Menu, DropdownMenu } from "../../index.ts";
@@ -15,8 +16,8 @@ const Navbar = () => {
         <div className="container flex justify-between items-center ">
           <div>
             <a href="/" className="front-bold text-2xl sm:text-3xl flex gap-2">
-              <img src={Logo} alt="" className="w-[50px]" />
-              E-commerce
+              <img src={Logo} alt="" className="w-[50px] rounded-md" />
+              Moda Mantra
             </a>
           </div>
           {/* sreach bar */}
