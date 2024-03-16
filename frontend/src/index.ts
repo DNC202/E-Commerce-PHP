@@ -1,8 +1,7 @@
-// import image slide 
+// import image slide
 import Image1 from "../src/assets/hero/women.png";
 import Image2 from "../src/assets/hero/sale.png";
 import Image3 from "../src/assets/hero/shopping.png";
-
 
 // import image product
 import Img1 from "../src/assets/women/women.png";
@@ -10,13 +9,10 @@ import Img2 from "../src/assets/women/women2.jpg";
 import Img3 from "../src/assets/women/women3.jpg";
 import Img4 from "../src/assets/women/women4.jpg";
 
-
 // import image top product
 import Shirt1 from "../src/assets/shirt/shirt.png";
 import Shirt2 from "../src/assets/shirt/shirt2.png";
 import Shirt3 from "../src/assets/shirt/shirt3.png";
-
-
 
 // Component Header (Navbar)
 
@@ -35,7 +31,6 @@ const Dropdown = [
   { id: 3, label: "Best Selling", link: "#" },
   { id: 4, label: "Best Rated", link: "#" },
 ];
-
 
 // Component Hero
 
@@ -108,7 +103,6 @@ const ProductsData = [
   },
 ];
 
-
 // Component Top Products
 const TopProductsData = [
   {
@@ -133,7 +127,6 @@ const TopProductsData = [
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
 ];
-
 
 // Testimonial Data
 const TestimonialData = [
@@ -163,8 +156,6 @@ const TestimonialData = [
   },
 ];
 
-
-
 // Footer link data
 const FooterLinks = [
   {
@@ -185,6 +176,20 @@ const FooterLinks = [
   },
 ];
 
+// Profile
+const Profile = [
+  {
+    id: 1,
+    label: "Profile",
+    link: "/profile",
+  },
+  {
+    id: 2,
+    label: "Logout",
+    link: "/logout",
+  },
+];
+
 // Export
 export const Menu = menuItems;
 export const DropdownMenu = Dropdown;
@@ -193,3 +198,4 @@ export const Products = ProductsData;
 export const TopProducts = TopProductsData;
 export const Testimonial = TestimonialData;
 export const FooterLink = FooterLinks;
+export const ProfileMenu = Profile;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
@@ -6,7 +6,15 @@ import { FaCaretDown } from "react-icons/fa";
 import Logo from "../../assets/image.png";
 import Darkmode from "./Darkmode";
 
-import { Menu, DropdownMenu } from "../../index.ts";
+import { Menu, DropdownMenu, ProfileMenu } from "../../index.ts";
+
+const user: {
+  name: string;
+  image: string;
+} = {
+  name: "John Doe",
+  image: "https://i.pravatar.cc/300",
+};
 
 const Navbar = () => {
   return (
@@ -44,13 +52,49 @@ const Navbar = () => {
             <div>
               <Darkmode />
             </div>
-            <div className='flex gap-4'>
-              <div>
-                <a href="/login">Login</a>
-              </div>
-              <div>
-                <a href="/register">Register</a>
-              </div>
+            {/* user profile  */}
+            <div>
+              {user ? (
+                <div className="group relative cursor-pointer">
+                  <div className="flex mx-2">
+                    <img
+                      src={user.image}
+                      alt=""
+                      className="w-10 rounded-full text-xl flex items-center gap-[2px] py-2"
+                    />
+                    <div className="text-xl flex items-center gap-[2px] py-2 mx-2">
+                      {user.name}
+                      <span>
+                        <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
+                      </span>
+                    </div>
+                    <div className="mt-14 absolute z-[9999] hidden group-hover:block w-[200px] rounded-md bg-white p-2 text-black shadow">
+                      <ul>
+                        {ProfileMenu.map((item) => (
+                          <li key={item.id}>
+                            <a
+                              href={item.link}
+                              className="inline-block w-full rounded-md p-2 hover:bg-primary/20"
+                            >
+                              {item.label}
+                            </a>
+                            <hr />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-4">
+                  <div>
+                    <a href="/login">Login</a>
+                  </div>
+                  <div>
+                    <a href="/register">Register</a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -80,7 +124,10 @@ const Navbar = () => {
               <ul>
                 {DropdownMenu.map((item) => (
                   <li key={item.id}>
-                    <a href={item.link} className="inline-block w-full rounded-md p-2 hover:bg-primary/20">
+                    <a
+                      href={item.link}
+                      className="inline-block w-full rounded-md p-2 hover:bg-primary/20"
+                    >
                       {item.label}
                     </a>
                     <hr />
