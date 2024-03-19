@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\VerifyEmailController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,21 +20,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [UserController::class, 'logout']);
-});
+Route::group([
 
+    'middleware' => 'api',
+    'prefix' => 'auth'
 
-Route::prefix('auth')->group(function () {
-    Route::post('/login', [UserController::class, 'login']);
-    Route::post('/register', [UserController::class, 'register']);
-    Route::get('/email/verify', function () {
-        return response()->json(['message' => 'Email verified successfully',], 200);
-    })->middleware('auth')->name('verification.notice');
+], function () {
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class,'login'])->name('login');
+    Route::get('active/{token}', [AuthController::class,'active']);
+    Route::post('logout', [AuthController::class,'logout']);
 });
 
 Route::prefix('categories')->group(function () {
