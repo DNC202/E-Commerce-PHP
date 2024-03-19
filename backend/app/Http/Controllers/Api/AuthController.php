@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -43,7 +44,7 @@ class AuthController extends Controller
         } else {
             $expirationDate = time() * 3600;
             $data = ['name' => $request->name, 'email' => $request->email, 'password' => $request->password, 'exp' => $expirationDate];
-            
+
             $secretKey = env('JWT_SECRET');
             $token = JWT::encode($data, $secretKey, 'HS256');
 
@@ -98,7 +99,7 @@ class AuthController extends Controller
         }
         $expirationDate = time() * 3600;
         $data = ['email' => $request->email, 'password' => $request->password, 'exp' => $expirationDate];
-        
+
         $secretKey = env('JWT_SECRET');
         $token = JWT::encode($data, $secretKey, 'HS256');
         return response()->json([
@@ -108,7 +109,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    
+
 
     /**
      * Get the authenticated User.
@@ -127,9 +128,9 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        Auth::logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Đăng xuất thành công'], 200);
     }
 
     /**

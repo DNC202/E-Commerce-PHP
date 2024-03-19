@@ -31,10 +31,23 @@ Route::group([
 
 ], function () {
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('login', [AuthController::class,'login'])->name('login');
-    Route::get('active/{token}', [AuthController::class,'active']);
-    Route::post('logout', [AuthController::class,'logout']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::get('active/{token}', [AuthController::class, 'active']);
+    Route::post('logout', [AuthController::class, 'logout']);
 });
+
+Route::group(
+    [
+        'middleware' => 'api',
+        'prefix' => 'users'
+    ],
+    function () {
+        Route::get('/{token}', [UserController::class, 'getUserByToken']);
+        Route::get('/', [UserController::class, 'getAllUser']);
+        Route::get('/{id}', [UserController::class, 'getUserById']);
+        Route::get('/email/{email}', [UserController::class, 'getUserByEmail']);
+    }
+);
 
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
