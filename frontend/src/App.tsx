@@ -1,10 +1,9 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import AOS from "aos";
 
-import Layout from './components/Layout/Layout'
+import Layout from "./components/Layout/Layout";
 
-const App = () => { 
-
+const App = () => {
   useEffect(() => {
     AOS.init({
       offset: 100,
@@ -14,14 +13,12 @@ const App = () => {
     });
     AOS.refresh();
   }, []);
-  
-  
-  
+
   return (
     <div>
-      <Layout/>
+      <Layout />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

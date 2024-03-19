@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import logo from "../../assets/Logo.png";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const HandleEmail = (e: any) => {
     setEmail(e.target.value);
@@ -12,9 +16,30 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const HandleSubmit = (e: any) => {
+  const LoginHandle = async (e: any) => {
     e.preventDefault();
-    console.log(email, password);
+    await axios
+      .post(
+        `http://localhost:8000/api/auth/login`,
+        {
+          email,
+          password,
+        }
+        // {
+        //   withCredentials: false,
+        // }
+      )
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        toast.success(res.data.message);
+        navigate("/");
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast.error(error.response.data.message);
+          // console.log(error.response.data.message);
+        }
+      });
   };
 
   return (
@@ -59,7 +84,7 @@ const Login = () => {
               </svg>
             </div>
             <button
-              onClick={HandleSubmit}
+              onClick={LoginHandle}
               className="bg-primary rounded-xl text-white py-2 hover:scale-105 duration-300"
             >
               Login
