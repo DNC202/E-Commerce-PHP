@@ -19,7 +19,7 @@ import Shirt3 from "../src/assets/shirt/shirt3.png";
 // Define your menu items
 const menuItems = [
   { id: 1, label: "Home", link: "/home" },
-  { id: 2, label: "Product", link: "/product" },
+  { id: 2, label: "Product", link: "/products" },
   { id: 3, label: "About", link: "/about" },
   { id: 4, label: "Contact", link: "/contact" },
   { id: 5, label: "Blog", link: "/blog" },

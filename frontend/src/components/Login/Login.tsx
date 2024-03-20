@@ -3,6 +3,7 @@ import logo from "../../assets/Logo.png";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import cookieParser from "cookie-parser";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,18 +20,11 @@ const Login = () => {
   const LoginHandle = async (e: any) => {
     e.preventDefault();
     await axios
-      .post(
-        `http://localhost:8000/api/auth/login`,
-        {
-          email,
-          password,
-        }
-        // {
-        //   withCredentials: false,
-        // }
-      )
+      .post(`http://localhost:8000/api/auth/login`, {
+        email,
+        password,
+      })
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
         toast.success(res.data.message);
         navigate("/");
       })

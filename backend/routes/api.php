@@ -34,6 +34,11 @@ Route::group([
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::get('active/{token}', [AuthController::class, 'active']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('check', [AuthController::class, 'checkUser']);
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::get('me', [AuthController::class, 'me']);
 });
 
 Route::group(
@@ -42,7 +47,7 @@ Route::group(
         'prefix' => 'users'
     ],
     function () {
-        Route::get('/{token}', [UserController::class, 'getUserByToken']);
+        Route::get('/token', [UserController::class, 'getUserByToken']);
         Route::get('/', [UserController::class, 'getAllUser']);
         Route::get('/{id}', [UserController::class, 'getUserById']);
         Route::get('/email/{email}', [UserController::class, 'getUserByEmail']);

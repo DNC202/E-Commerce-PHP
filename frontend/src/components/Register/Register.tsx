@@ -1,28 +1,55 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import logo from "../../assets/Logo.png";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
-  const RegisterHandle = () => {
-    if(password === confirmPassword) {
-      console.log(email, password);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const RegisterHandle = (e: any) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Password does not match");
+    } else {
+      axios
+        .post(`http://localhost:8000/api/auth/register`, {
+          name,
+          email,
+          password,
+        })
+        .then((res) => {
+          toast.success(res.data.message);
+          navigate("/login");
+        })
+        .catch((error) => {
+          if (error.response) {
+            toast.error(error.response.data.message);
+          }
+        });
     }
-  }
+  };
+
+  const handleFullName = (e: any) => {
+    setName(e.target.value);
+  };
 
   const handleEmail = (e: any) => {
     setEmail(e.target.value);
-  }
+  };
 
   const HandlePassword = (e: any) => {
     setPassword(e.target.value);
-  }
+  };
 
   const HandleConfirmPassword = (e: any) => {
     setConfirmPassword(e.target.value);
-  }
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center dark:bg-gray-950">
@@ -38,6 +65,14 @@ const Register = () => {
           <form action="" method="post" className="flex flex-col gap-4">
             <input
               className="p-2 mt-8 rounded-xl border dark:border-gray-500 dark:bg-gray-800 dark:text-white"
+              type="name"
+              name="name"
+              placeholder="Full Name"
+              // value={email}
+              onChange={handleFullName}
+            />
+            <input
+              className="p-2 rounded-xl border dark:border-gray-500 dark:bg-gray-800 dark:text-white"
               type="email"
               name="email"
               placeholder="Email"
@@ -86,7 +121,10 @@ const Register = () => {
                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
               </svg>
             </div>
-            <button onClick={RegisterHandle} className="bg-primary rounded-xl text-white py-2 hover:scale-105 duration-300">
+            <button
+              onClick={RegisterHandle}
+              className="bg-primary rounded-xl text-white py-2 hover:scale-105 duration-300"
+            >
               Register
             </button>
           </form>

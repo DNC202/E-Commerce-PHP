@@ -79,34 +79,110 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validation
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
+            'email' => 'required',
+            'password' => 'required'
         ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 401,
-                'message' => $validator->messages()
-            ], 401);
-        } else {
-            $user = User::where('email', $request->email)->first();
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'Wrong email or password. Please try again.',
-                ], 401);
-            }
-        }
-        $expirationDate = time() * 3600;
-        $data = ['email' => $request->email, 'password' => $request->password, 'exp' => $expirationDate];
 
+        if ($validator->fails()) {
+            $response = [
+                'success' => false,
+                'message' => $validator->errors()
+            ];
+            return response()->json($response, 200);
+        }
+
+        // Check if the user exists and is not deleted
+        $user = User::find($request->email);
+
+        // if (!$user) {
+        //     return response()->json(['message' => 'Tài khoản không tồn tại hoặc đã bị xóa.'], 401);
+        // }
+
+        // Attempt to authenticate the user
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials)) {
+            $secretKey = env('JWT_SECRET');
+            $expirationTime = time() + 3600; // Hạn sử dụng của token là 1 giờ (3600 giây)
+
+            $tokenData = [
+                'userId' => $user->id,
+                'exp' => $expirationTime,
+            ];
+            $token = JWT::encode($tokenData, $secretKey, 'HS256');
+            setcookie('access_token', $token, [
+                'expires' => $expirationTime,
+                'path' => '/',
+                'domain' => '127.0.0.1',
+                'samesite' => 'None',
+                'secure' => true,
+                'httponly' => true
+            ]);
+
+            return response()->json($user);
+        }
+
+        // Authentication failed
+        return response()->json(['message' => 'Đăng nhập không thành công. Vui lòng kiểm tra lại email và mật khẩu.'], 401);
+    }
+
+    // public function login(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email',
+    //         'password' => 'required|string|min:6',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status' => 401,
+    //             'message' => $validator->messages()
+    //         ], 401);
+    //     } else {
+    //         $user = User::where('email', $request->email)->first();
+    //         if (!$user || !Hash::check($request->password, $user->password)) {
+    //             return response()->json([
+    //                 'status' => 401,
+    //                 'message' => 'Wrong email or password. Please try again.',
+    //             ], 401);
+    //         }
+    //     }
+    //     $secretKey = env('JWT_SECRET');
+    //     $expirationTime = time() + 3600; // Hạn sử dụng của token là 1 giờ (3600 giây)
+
+    //     $tokenData = [
+    //         'userId' => $user->id,
+    //         'exp' => $expirationTime,
+    //     ];
+    //     $token = JWT::encode($tokenData, $secretKey, 'HS256');
+    //     setcookie('access_token', $token, [
+    //         'expires' => $expirationTime,
+    //         'path' => '/',
+    //         'domain' => '127.0.0.1',
+    //         'samesite' => 'None',
+    //         'secure' => true,
+    //         'httponly' => true
+    //     ]);
+    //     return response()->json([
+    //         'status' => 200,
+    //         'message' => 'Đăng nhập thành công',
+    //         // 'token' => $token
+    //     ], 200);
+
+    // }
+
+    public function checkUser(Request $request)
+    {
+        $token = Cookie::get('access_token');
         $secretKey = env('JWT_SECRET');
-        $token = JWT::encode($data, $secretKey, 'HS256');
-        return response()->json([
-            'status' => 200,
-            'message' => 'Login successfully.',
-            'token' => $token,
-        ], 200);
+        try {
+            $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
+            $userId = $decoded->userId;
+            $user = User::find($userId);
+            return response()->json($user);
+        } catch (\Exception $e) {
+            return response()->json("Lỗi xác minh token", 401);
+        }
     }
 
 

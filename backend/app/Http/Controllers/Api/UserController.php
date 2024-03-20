@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Firebase\JWT\JWT as JWT;
+use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Config;
 
 class UserController extends Controller
 {
@@ -33,17 +35,19 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function getUserByToken($request)
+    public function getUserByToken(Request $request)
     {
+
         $token = $request->bearerToken();
         if (!$token) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         try {
-            $decoded = JWT::decode($token, new Key(Config::get('JWT_SECRET')), ['HS256']);
-            $id = $decoded->data->id;
-            $user = User::find($id);
+            $secretKey = env('JWT_SECRET');
+            $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
+            $email = $decoded->data->email;
+            $user = User::find($email);
             if (!$user) {
                 return response()->json(['error' => 'User not found'], 404);
             }

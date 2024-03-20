@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
@@ -7,16 +7,36 @@ import Logo from "../../assets/image.png";
 import Darkmode from "./Darkmode";
 
 import { Menu, DropdownMenu, ProfileMenu } from "../../index.ts";
-
-const user: {
-  name: string;
-  image: string;
-} = {
-  name: "John Doe",
-  image: "https://i.pravatar.cc/300",
-};
+import { useSelector, useDispatch } from "react-redux";
+import {
+  loadUsersFailure,
+  loadUsersStart,
+  loadUsersSuccess,
+} from "../../redux/Slice/User.ts";
+import { RootState } from "../../redux/store.ts";
+import axios from "axios";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  //set user state
+  const user = useSelector((state: RootState) => state.users.users);
+  useEffect(() => {
+    dispatch(loadUsersStart());
+    if (localStorage.getItem("token")) {
+      axios
+        .get("http://localhost:8000/api/users/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          dispatch(loadUsersSuccess(res.data));
+        })
+        .catch((err) => {
+          dispatch(loadUsersFailure(err.message));
+        });
+    }
+  }, [dispatch]);
   return (
     <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 relative z-40">
       {/* upper Navbar */}
@@ -58,12 +78,12 @@ const Navbar = () => {
                 <div className="group relative cursor-pointer">
                   <div className="flex mx-2">
                     <img
-                      src={user.image}
+                      src={user?.image}
                       alt=""
                       className="w-10 rounded-full text-xl flex items-center gap-[2px] py-2"
                     />
                     <div className="text-xl flex items-center gap-[2px] py-2 mx-2">
-                      {user.name}
+                      {user?.name}
                       <span>
                         <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
                       </span>
