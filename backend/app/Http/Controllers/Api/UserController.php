@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Auth\VerifyEmailController;
+
 use App\Models\User;
 use Firebase\JWT\JWT as JWT;
 use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 

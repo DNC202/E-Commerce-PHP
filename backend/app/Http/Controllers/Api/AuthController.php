@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Mail\EmailVerification;
+use DateTime;
 use Firebase\JWT\JWT as JWT;
 use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +25,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', "register", 'active']]);
+        $this->middleware('auth:api', ['except' => ['login', "register", 'active', 'getAccount']]);
     }
 
     public function register(Request $request)
@@ -44,6 +46,7 @@ class AuthController extends Controller
         } else {
             $expirationDate = time() * 3600;
             $data = ['name' => $request->name, 'email' => $request->email, 'password' => $request->password, 'exp' => $expirationDate];
+
 
             $secretKey = env('JWT_SECRET');
             $token = JWT::encode($data, $secretKey, 'HS256');
@@ -67,7 +70,6 @@ class AuthController extends Controller
                 'name' => $decoded->name,
                 'email' => $decoded->email,
                 'password' => $decoded->password,
-                'email_verified_at' => now(),
             ];
             // return response()->json($decoded);
             User::create($userData);
@@ -86,93 +88,35 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'success' => false,
-                'message' => $validator->errors()
-            ];
-            return response()->json($response, 200);
-        }
-
-        // Check if the user exists and is not deleted
-        $user = User::find($request->email);
-
-        // if (!$user) {
-        //     return response()->json(['message' => 'Tài khoản không tồn tại hoặc đã bị xóa.'], 401);
-        // }
-
-        // Attempt to authenticate the user
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+            return response()->json([
+                'status' => 401,
+                'message' => $validator->messages()
+            ], 401);
+        } else {
+            $user = User::where('email', $request->email)->first();
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Wrong email or password. Please try again.',
+                ], 401);
+            }
+            $expirationDate = time() * 3600;
+            $data = ['userId' => $user->id, 'exp' => $expirationDate];
             $secretKey = env('JWT_SECRET');
-            $expirationTime = time() + 3600; // Hạn sử dụng của token là 1 giờ (3600 giây)
-
-            $tokenData = [
-                'userId' => $user->id,
-                'exp' => $expirationTime,
-            ];
-            $token = JWT::encode($tokenData, $secretKey, 'HS256');
-            setcookie('access_token', $token, [
-                'expires' => $expirationTime,
-                'path' => '/',
-                'domain' => '127.0.0.1',
-                'samesite' => 'None',
-                'secure' => true,
-                'httponly' => true
-            ]);
-
-            return response()->json($user);
+            $token = JWT::encode($data, $secretKey, 'HS256');
+            
+            $cookie = cookie('access_token', $token, $expirationDate);
+            // if (!$cookie) {
+            //     return response()->json([
+            //         'status' => 500,
+            //         'message' => 'Internal server error.',
+            //     ], 500);
+            // }
         }
-
-        // Authentication failed
-        return response()->json(['message' => 'Đăng nhập không thành công. Vui lòng kiểm tra lại email và mật khẩu.'], 401);
+        return response()->json()->withCookie($cookie);
     }
 
-    // public function login(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required|string|min:6',
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => 401,
-    //             'message' => $validator->messages()
-    //         ], 401);
-    //     } else {
-    //         $user = User::where('email', $request->email)->first();
-    //         if (!$user || !Hash::check($request->password, $user->password)) {
-    //             return response()->json([
-    //                 'status' => 401,
-    //                 'message' => 'Wrong email or password. Please try again.',
-    //             ], 401);
-    //         }
-    //     }
-    //     $secretKey = env('JWT_SECRET');
-    //     $expirationTime = time() + 3600; // Hạn sử dụng của token là 1 giờ (3600 giây)
-
-    //     $tokenData = [
-    //         'userId' => $user->id,
-    //         'exp' => $expirationTime,
-    //     ];
-    //     $token = JWT::encode($tokenData, $secretKey, 'HS256');
-    //     setcookie('access_token', $token, [
-    //         'expires' => $expirationTime,
-    //         'path' => '/',
-    //         'domain' => '127.0.0.1',
-    //         'samesite' => 'None',
-    //         'secure' => true,
-    //         'httponly' => true
-    //     ]);
-    //     return response()->json([
-    //         'status' => 200,
-    //         'message' => 'Đăng nhập thành công',
-    //         // 'token' => $token
-    //     ], 200);
-
-    // }
-
-    public function checkUser(Request $request)
-    {
+    public function getAccount(){
         $token = Cookie::get('access_token');
         $secretKey = env('JWT_SECRET');
         try {
@@ -192,7 +136,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function profile()
     {
         return response()->json(auth()->user());
     }

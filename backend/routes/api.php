@@ -31,14 +31,10 @@ Route::group([
 
 ], function () {
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::get('active/{token}', [AuthController::class, 'active']);
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('check', [AuthController::class, 'checkUser']);
-    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
-    Route::post('reset-password', [AuthController::class, 'resetPassword']);
-    Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::get('me', [AuthController::class, 'me']);
+    Route::post('login', [AuthController::class,'login'])->name('login');
+    Route::get('active/{token}', [AuthController::class,'active']);
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::get('check', [AuthController::class, 'getAccount']);
 });
 
 Route::group(
@@ -60,4 +56,12 @@ Route::prefix('categories')->group(function () {
     Route::post('/create', [CategoryController::class, 'create']);
     Route::put('/edit/{id}', [CategoryController::class, 'edit']);
     Route::delete('/delete/{id}', [CategoryController::class, 'delete']);
+});
+
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{id}', [ProductController::class, 'show']);
+    Route::post('/create', [ProductController::class, 'create']);
+    Route::put('/edit/{id}', [ProductController::class, 'edit']);
+    Route::delete('/delete/{id}', [ProductController::class, 'delete']);
 });
